@@ -111,7 +111,6 @@ function draw() {
   }
   clear();
   background(0);
-  showMaze(maze);
   correctPath[i].isPath = true;
   beginShape();
   noFill();
@@ -123,6 +122,7 @@ function draw() {
   endShape();
   i++;
   current = correctPath[i];
+  showMaze(maze);
   strokeWeight(5);
   stroke(255);
   noFill();
