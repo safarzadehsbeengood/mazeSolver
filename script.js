@@ -13,7 +13,7 @@ function setup() {
   let winSize = min(windowWidth, windowHeight) - 100;
   cnv = createCanvas(winSize, winSize);
   cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2);
-  // frameRate(2);
+  // frameRate(10);
   maze = generateMaze(DIM);
   w = width / DIM;
   restart();
@@ -84,7 +84,7 @@ function showMaze(maze) {
 }
 
 function solve(maze, i, j) {
-  redraw();
+  // redraw();
   if (maze[i][j] === end) {
     return true;
   }
@@ -113,10 +113,18 @@ function draw() {
   background(0);
   showMaze(maze);
   correctPath[i].isPath = true;
+  beginShape();
+  noFill();
+  stroke(0, 100, 250);
+  strokeWeight(4)
+  for (let x = 0; x <= i; x++) {
+    vertex(correctPath[x].j*w+w/2, correctPath[x].i*w+w/2);
+  }
+  endShape();
   i++;
   current = correctPath[i];
-  strokeWeight(3);
-  stroke(2550, 255, 255);
+  strokeWeight(5);
+  stroke(255);
   noFill();
   rect(0, 0, width, height);
 }

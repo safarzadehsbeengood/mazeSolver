@@ -40,9 +40,10 @@ class Cell {
     let y = this.i * w;
     
     if (this == current) {
-      stroke(0, 0, 255);
-      fill(0, 0, 255);
-      square(x+2, y+2, w-4);
+      stroke(0, 100, 255);
+      strokeWeight(1);
+      fill(5, 100, 255);
+      square(x+6, y+6, w-12);
     }
 
     stroke(255);
@@ -64,20 +65,23 @@ class Cell {
       line(x, y, x, y + w);
     }
     if (this == start) {
-      stroke(0, 255, 0);
+      noStroke();
       fill(0, 255, 0);
-      square(x+2, y+2, w-4);
+      square(x, y, w);
     }
     if (this == end) {
-      stroke(255, 0, 0);
+      noStroke();
       fill(255, 0, 0);
-      square(x+2, y+2, w-4);
+      square(x, y, w);
     }
-    if (this.isPath) {
-      stroke(0, 255, 0, 0);
-      fill(2550, 100, 200, 100);
-      square(x+2, y+2, w);
-    }
+    // if (this.isPath) {
+    //   noStroke();
+    //   fill(0, 200, 200, 100);
+    //   square(x, y, w);
+    //   stroke(0);
+    //   strokeWeight(4);
+    //   point(x+w/2, y+w/2);
+    // }
     // noStroke();
     // fill(255);
     // textSize(9);
