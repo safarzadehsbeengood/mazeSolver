@@ -7,7 +7,7 @@ let current;
 let start, end;
 let correctPath;
 let i;
-const DIM = 30;
+const DIM = 50;
 
 function setup() {
   let winSize = min(windowWidth, windowHeight) - 100;
@@ -120,9 +120,9 @@ function draw() {
     vertex(correctPath[x].j*w+w/2, correctPath[x].i*w+w/2);
   }
   endShape();
+  showMaze(maze);
   i++;
   current = correctPath[i];
-  showMaze(maze);
   strokeWeight(5);
   stroke(255);
   noFill();
