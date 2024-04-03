@@ -7,19 +7,25 @@ let current;
 let start, end;
 let correctPath;
 let i;
-const DIM = 50;
+let dimSlider, resetButton, instantButton;
+let DIM;
 
 function setup() {
   let winSize = min(windowWidth, windowHeight) - 100;
   cnv = createCanvas(winSize, winSize);
   cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2);
   // frameRate(10);
-  maze = generateMaze(DIM);
-  w = width / DIM;
+  dimSlider = createSlider(10, 100, 40, 1);
+  resetButton = createButton("Reset");
+  resetButton.mousePressed(restart);
+  instantCheck = createCheckbox("Instant", false);
+  instantCheck.style("color: white;");
   restart();
 }
 
 function restart() {
+  DIM = dimSlider.value();
+  w = width / DIM;
   maze = generateMaze(DIM);
   start = maze[0][0];
   start.visited = true;
@@ -31,18 +37,6 @@ function restart() {
   correctPath.reverse();
   current = correctPath[0];
   i = 0; 
-}
-
-function wallsToBin(walls) {
-  let res = "";
-  for (wall of walls) {
-    if (wall) {
-      res += "1";
-    } else {
-      res += "0";
-    }
-  }
-  return res;
 }
 
 function getNeighbors(maze, i, j) {
@@ -71,10 +65,6 @@ function getNeighbors(maze, i, j) {
   return neighbors;
 }
 
-function MD(x1, y1, x2, y2) {
-  return abs(x1 - x2) + abs(y1 - y2);
-}
-
 function showMaze(maze) {
   for (let j = 0; j < DIM; j++) {
     for (let i = 0; i < DIM; i++) {
@@ -90,9 +80,7 @@ function solve(maze, i, j) {
   }
   maze[i][j].visited = true; // mark the current cell as visited
   let neighbors = getNeighbors(maze, i, j); // get the neighbors of the current cell
-  // console.table(neighbors);
   if (neighbors) {
-    // if it has neighbors,
     for (neighbor of neighbors) {
       if (solve(maze, neighbor.i, neighbor.j)) {
         correctPath.push(maze[i][j]);
@@ -105,24 +93,34 @@ function solve(maze, i, j) {
   }
 }
 
+function drawPath(maze, i) {
+  beginShape();
+    noFill();
+    stroke(0, 100, 250);
+    strokeWeight(4)
+    for (let x = 0; x <= i; x++) {
+      vertex(correctPath[x].j*w+w/2, correctPath[x].i*w+w/2);
+    }
+    endShape();
+}
+
 function draw() {
+  if (DIM != dimSlider.value()) {
+    restart();
+  }
   if (i > correctPath.length-1) {
     restart();
   }
   clear();
   background(0);
-  correctPath[i].isPath = true;
-  beginShape();
-  noFill();
-  stroke(0, 100, 250);
-  strokeWeight(4)
-  for (let x = 0; x <= i; x++) {
-    vertex(correctPath[x].j*w+w/2, correctPath[x].i*w+w/2);
+  if (!instantCheck.checked()) {
+    drawPath(maze, i);
+    i++;
+    current = correctPath[i];
+  } else {
+    drawPath(maze, correctPath.length-1);
   }
-  endShape();
   showMaze(maze);
-  i++;
-  current = correctPath[i];
   strokeWeight(5);
   stroke(255);
   noFill();
